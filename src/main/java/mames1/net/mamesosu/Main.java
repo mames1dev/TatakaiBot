@@ -7,12 +7,14 @@ import mames1.net.mamesosu.pool.PoolLoader;
 public class Main {
 
     public static Bot bot;
+    public static IRCClient ircClient;
+    public static PoolLoader poolLoader;
 
     public static void main(String[] args) throws Exception{
 
-        Bot bot = new Bot();
-        IRCClient ircClient = new IRCClient();
-        PoolLoader poolLoader = new PoolLoader();
+        bot = new Bot();
+        ircClient = new IRCClient();
+        poolLoader = new PoolLoader();
 
         bot.start();
         // start: debug code
