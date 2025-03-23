@@ -48,11 +48,16 @@ public class SpreadSheets {
 
         String code = new java.util.Scanner(System.in).nextLine();
 
-        TokenResponse tokenResponse = flow.newTokenRequest(code).setRedirectUri(redirectUri).execute();
+        try {
+            TokenResponse tokenResponse = flow.newTokenRequest(code).setRedirectUri(redirectUri).execute();
 
-        Credential credential = flow.createAndStoreCredential(tokenResponse, "user");
+            Credential credential = flow.createAndStoreCredential(tokenResponse, "user");
 
-        return credential;
+            return credential;
+        } catch (Exception e) {
+            System.out.println("!!!!!! 認証コードが異なります。Botを起動できませんでした !!!!!!");
+            throw new RuntimeException();
+        }
     }
 
     public static Sheets getSheetsService() throws IOException, GeneralSecurityException {
