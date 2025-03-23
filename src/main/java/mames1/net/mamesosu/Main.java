@@ -15,7 +15,7 @@ public class Main {
         PoolLoader poolLoader = new PoolLoader();
         bot.start();
         // debug code
-        System.out.println(poolLoader.loadPool());
+        System.out.println(poolLoader.loadAllPool());
         ircClient.start();
     }
 }

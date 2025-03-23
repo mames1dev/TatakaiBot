@@ -1,6 +1,8 @@
 package mames1.net.mamesosu.pool;
 
 import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.model.Sheet;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -26,14 +28,17 @@ public class PoolLoader {
         return (row[1] - row[0]);
     }
 
-    private int[] loadRow() throws IOException, GeneralSecurityException {
+    private int[] loadRow(String sheet) throws IOException {
 
-        sheetsService = getSheetsService();
-        String range = "D3:E3";
+        String range = sheet + "!D3:E3";
         ValueRange response = sheetsService.spreadsheets().values()
                 .get(SPREADSHEET_ID, range)
                 .execute();
         List<List<Object>> values = response.getValues();
+
+        if (values == null || values.isEmpty()) {
+            return new int[] {0, 0};
+        }
 
         for (List row : values) {
             return new int [] {Integer.parseInt(row.get(0).toString()), Integer.parseInt(row.get(1).toString())};
@@ -42,12 +47,36 @@ public class PoolLoader {
         return new int[] {0, 0};
     }
 
-    public List<Map<String, Integer>> loadPool () throws IOException, GeneralSecurityException {
+    // load all pools
+    // ["pool_name": [{"NM1": 1}, {"NM2": 2}, ...], ...]
+    public List<Map<String, List<Map<String, Integer>>>> loadAllPool() throws IOException, GeneralSecurityException {
 
-        int[] row = loadRow();
+        sheetsService = getSheetsService();
+        Spreadsheet spreadsheet = sheetsService.spreadsheets().get(SPREADSHEET_ID).execute();
+        List<Sheet> sheets = spreadsheet.getSheets();
+        List<Map<String, List<Map<String, Integer>>>> pool = new ArrayList<>();
 
-        String mod_range = "J6:" + "J" + (6 + calculateRow(row));
-        String id_range = "L6:" + "L" + (6 + calculateRow(row));
+        for(Sheet sheet : sheets) {
+            Map<String, List<Map<String, Integer>>> p = loadPool(sheet.getProperties().getTitle());
+            if(p != null) {
+                pool.add(p);
+            }
+        }
+
+        return pool;
+    }
+
+    private Map<String, List<Map<String, Integer>>> loadPool(String sheet) throws IOException, GeneralSecurityException {
+
+        int[] row = loadRow(sheet);
+
+        if(row[0] == 0 && row[1] == 0) {
+            return null;
+        }
+
+        String pool_name = sheet + "!A3";
+        String mod_range = sheet + "!J6:" + "J" + (6 + calculateRow(row));
+        String id_range = sheet + "!L6:" + "L" + (6 + calculateRow(row));
 
         ValueRange mod_response = sheetsService.spreadsheets().values()
                 .get(SPREADSHEET_ID, mod_range)
@@ -56,8 +85,21 @@ public class PoolLoader {
                 .get(SPREADSHEET_ID, id_range)
                 .execute();
 
+        ValueRange name = sheetsService.spreadsheets().values()
+                .get(SPREADSHEET_ID, pool_name)
+                .execute();
+
         List<List<Object>> mod_values = mod_response.getValues();
         List<List<Object>> id_values = id_response.getValues();
+        List<List<Object>> name_values = name.getValues();
+
+        if (mod_values == null || mod_values.isEmpty() || id_values == null || id_values.isEmpty()) {
+            return null;
+        }
+
+        if (name_values == null || name_values.isEmpty()) {
+            return null;
+        }
 
         List<Map<String, Integer>> pool = new ArrayList<>();
 
@@ -68,6 +110,6 @@ public class PoolLoader {
             ));
         }
 
-        return pool;
+        return Map.of(name_values.get(0).get(0).toString() , pool);
     }
 }
