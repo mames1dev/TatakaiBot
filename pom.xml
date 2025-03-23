@@ -56,7 +56,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.4.5-jre</version>  <!-- ここを適切なバージョンに変更 -->
+            <version>21.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-sheets -->
