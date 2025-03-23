@@ -13,9 +13,11 @@ public class Main {
         Bot bot = new Bot();
         IRCClient ircClient = new IRCClient();
         PoolLoader poolLoader = new PoolLoader();
+
         bot.start();
-        // debug code
+        // start: debug code
         System.out.println(poolLoader.loadAllPool());
+        // end: debug code
         ircClient.start();
     }
 }

@@ -19,9 +19,10 @@ public class PoolLoader {
     String SPREADSHEET_ID;
     Sheets sheetsService;
 
-    public PoolLoader () {
+    public PoolLoader () throws IOException, GeneralSecurityException {
         Dotenv dotenv = Dotenv.configure().load();
         SPREADSHEET_ID = dotenv.get("SPREADSHEET_ID");
+        sheetsService = getSheetsService();
     }
 
     private int calculateRow(int[] row) {
@@ -51,7 +52,6 @@ public class PoolLoader {
     // ["pool_name": [{"NM1": 1}, {"NM2": 2}, ...], ...]
     public List<Map<String, List<Map<String, Integer>>>> loadAllPool() throws IOException, GeneralSecurityException {
 
-        sheetsService = getSheetsService();
         Spreadsheet spreadsheet = sheetsService.spreadsheets().get(SPREADSHEET_ID).execute();
         List<Sheet> sheets = spreadsheet.getSheets();
         List<Map<String, List<Map<String, Integer>>>> pool = new ArrayList<>();
@@ -94,6 +94,10 @@ public class PoolLoader {
         List<List<Object>> name_values = name.getValues();
 
         if (mod_values == null || mod_values.isEmpty() || id_values == null || id_values.isEmpty()) {
+            return null;
+        }
+
+        if(mod_values.size() != id_values.size()) {
             return null;
         }
 

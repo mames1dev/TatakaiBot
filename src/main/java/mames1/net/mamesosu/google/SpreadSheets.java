@@ -41,10 +41,10 @@ public class SpreadSheets {
 
         AuthorizationCodeRequestUrl authorizationCodeRequestUrl = flow.newAuthorizationUrl().setRedirectUri(redirectUri);
 
-        System.out.println("Googleと接続しました。");
-        System.out.println("URLから認証codeを取得してください: " + authorizationCodeRequestUrl);
+        System.out.println("!!!!! Googleと接続しました。 !!!!!");
+        System.out.println("!!!!! URLから認証コードを取得してください: " + authorizationCodeRequestUrl + " !!!!!");
 
-        System.out.print("コードはこのコマンドラインにペーストしてください。\n");
+        System.out.print("!!!!!! コードはこのコマンドラインにペーストしてください。!!!!!\n");
 
         String code = new java.util.Scanner(System.in).nextLine();
 
