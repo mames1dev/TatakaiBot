@@ -66,7 +66,7 @@ public class PoolLoader {
         return pool;
     }
 
-    private Map<String, List<Map<String, Integer>>> loadPool(String sheet) throws IOException, GeneralSecurityException {
+    private Map<String, List<Map<String, Integer>>> loadPool(String sheet) throws IOException {
 
         int[] row = loadRow(sheet);
 
