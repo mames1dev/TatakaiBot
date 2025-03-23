@@ -26,8 +26,6 @@ import java.util.List;
 
 public class SpreadSheets {
 
-    private static Sheets sheetsService;
-
     private static Credential authorize() throws IOException, GeneralSecurityException {
 
         InputStream in = SpreadSheets.class.getResourceAsStream("/credentials.json");
@@ -69,27 +67,5 @@ public class SpreadSheets {
                 GsonFactory.getDefaultInstance(), credential)
                 .setApplicationName(APPLICATION_NAME)
                 .build();
-    }
-
-    public static void testRange() throws IOException, GeneralSecurityException {
-        Dotenv dotenv = Dotenv.configure().load();
-        String SPREADSHEET_ID = dotenv.get("SPREADSHEET_ID");
-
-        sheetsService = getSheetsService();
-        String range = "A1:E1";
-
-        ValueRange response = sheetsService.spreadsheets().values()
-                .get(SPREADSHEET_ID, range)
-                .execute();
-
-        List<List<Object>> values = response.getValues();
-
-        if (values == null || values.isEmpty()) {
-            System.out.println("No data found.");
-        } else {
-            for (List row : values) {
-                System.out.printf("%s\n", row.get(0));
-            }
-        }
     }
 }

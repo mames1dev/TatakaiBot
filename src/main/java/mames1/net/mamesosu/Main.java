@@ -1,7 +1,6 @@
 package mames1.net.mamesosu;
 
 import mames1.net.mamesosu.discord.Bot;
-import mames1.net.mamesosu.google.SpreadSheets;
 import mames1.net.mamesosu.irc.IRCClient;
 import mames1.net.mamesosu.pool.PoolLoader;
 
@@ -13,10 +12,10 @@ public class Main {
 
         Bot bot = new Bot();
         IRCClient ircClient = new IRCClient();
+        PoolLoader poolLoader = new PoolLoader();
         bot.start();
-        for (int i : new PoolLoader().loadRow()) {
-            System.out.println(i);
-        }
+        // debug code
+        System.out.println(poolLoader.loadPool());
         ircClient.start();
     }
 }
