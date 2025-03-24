@@ -1,10 +1,7 @@
 package mames1.net.mamesosu.irc.event;
 
-import mames1.net.mamesosu.Main;
 import mames1.net.mamesosu.data.MySQL;
-import mames1.net.mamesosu.irc.IRCClient;
 import mames1.net.mamesosu.osu.UserAccount;
-import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -40,6 +37,4 @@ public class ReceiveCode extends ListenerAdapter {
             ex.printStackTrace();
         }
     }
-
-
 }
