@@ -1,4 +1,4 @@
-package mames1.net.mamesosu.pool;
+package mames1.net.mamesosu.tournament;
 
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.Sheet;
@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static mames1.net.mamesosu.google.SpreadSheets.getSheetsService;
 
+// プール情報をロード
 public class PoolLoader {
 
     String SPREADSHEET_ID;
@@ -114,6 +115,6 @@ public class PoolLoader {
             ));
         }
 
-        return Map.of(name_values.get(0).get(0).toString() , pool);
+        return Map.of(name_values.get(0).get(0).toString().toLowerCase() , pool);
     }
 }

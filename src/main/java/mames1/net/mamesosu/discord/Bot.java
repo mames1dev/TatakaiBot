@@ -2,11 +2,14 @@ package mames1.net.mamesosu.discord;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;
+import mames1.net.mamesosu.discord.event.CreateMatch;
 import mames1.net.mamesosu.discord.event.LinkAccount;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Bot {
@@ -42,9 +45,15 @@ public class Bot {
                         CacheFlag.STICKER,
                         CacheFlag.SCHEDULED_EVENTS
                 ).setActivity(
-                        Activity.playing(presence))
+                        Activity.playing(presence)
+                 ).setMemberCachePolicy(
+                        MemberCachePolicy.ALL
+                ).setChunkingFilter(
+                        ChunkingFilter.ALL
+                )
                 .addEventListeners(
-                        new LinkAccount()
+                        new LinkAccount(),
+                        new CreateMatch()
                 )
                 .build();
     }

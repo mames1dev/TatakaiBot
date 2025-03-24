@@ -24,4 +24,14 @@ public abstract class Embed {
                 .setColor(Color.GRAY)
                 .setTimestamp(new Date().toInstant());
     }
+
+    public static EmbedBuilder getInviteEmbed(String[] args) {
+        return new EmbedBuilder()
+                .setTitle("試合へ参加しますか？")
+                .setDescription(args[1] + "さんが" + args[2] + "を試合に招待しました！\n" +
+                        "このメッセージにリアクションをすると、試合に参加することができます。\n" +
+                        "Rikuimaから招待を受けられるよう、ログインをして待機してください。")
+                .setColor(Color.GRAY)
+                .setTimestamp(new Date().toInstant());
+    }
 }
