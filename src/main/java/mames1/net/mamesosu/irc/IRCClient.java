@@ -1,12 +1,15 @@
 package mames1.net.mamesosu.irc;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.opencensus.trace.Link;
 import lombok.Getter;
+import mames1.net.mamesosu.irc.event.ReceiveCode;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 
 public class IRCClient {
 
+    @Getter
     String name;
     String password;
     int port;
@@ -28,17 +31,13 @@ public class IRCClient {
     }
 
     public void start() throws Exception {
-        if(debug) {
-            channel = "#osu";
-        }
 
         Configuration configuration = new Configuration.Builder()
                 .setName(name)
                 .setServerPassword(password)
                 .addServer(server)
                 .setServerPort(port)
-                .addAutoJoinChannel(channel)
-                .addListener(new DebugListener())
+                .addListener(new ReceiveCode())
                 .buildConfiguration();
 
         bot = new PircBotX(configuration);

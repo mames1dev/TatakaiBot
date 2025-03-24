@@ -1,7 +1,9 @@
 package mames1.net.mamesosu;
 
+import mames1.net.mamesosu.data.MySQL;
 import mames1.net.mamesosu.discord.Bot;
 import mames1.net.mamesosu.irc.IRCClient;
+import mames1.net.mamesosu.osu.Osu;
 import mames1.net.mamesosu.pool.PoolLoader;
 
 public class Main {

@@ -2,6 +2,7 @@ package mames1.net.mamesosu.discord;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;
+import mames1.net.mamesosu.discord.event.LinkAccount;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -43,7 +44,7 @@ public class Bot {
                 ).setActivity(
                         Activity.playing(presence))
                 .addEventListeners(
-                        new DebugListener()
+                        new LinkAccount()
                 )
                 .build();
     }
