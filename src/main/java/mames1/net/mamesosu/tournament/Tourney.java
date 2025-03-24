@@ -15,6 +15,7 @@ public class Tourney {
 
     List<Map<Long, Integer>> players; // [DiscordID, BanchoID]
     Map<String, List<Map<String, Integer>>> pool = new HashMap<>();
+    String tourneyName;
 
     public Tourney() {
         players = new ArrayList<>();

@@ -109,13 +109,14 @@ public class CreateMatch extends ListenerAdapter {
                     pool = Main.pool.getPool(tournamentName);
                     Main.tourney.setPool(pool);
 
+                    // トーナメント名をセット
+                    Main.tourney.setTourneyName(tournamentName);
+
+                    // player2に招待を送信
                     List<Long> discordUsers = playerList.stream()
                             .filter(map -> !map.isEmpty())
                             .map(map -> map.keySet().iterator().next())
                             .toList();
-
-                    System.out.println(discordUsers);
-                    System.out.println(discordUsers.get(discordUsers.size()-1));
 
                     Member member = e.getGuild().getMemberById(discordUsers.get(1));
                     User user = member.getUser();
