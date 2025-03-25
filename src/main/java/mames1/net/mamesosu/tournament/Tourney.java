@@ -16,10 +16,15 @@ public class Tourney {
 
     List<Map<Long, Integer>> players; // [DiscordID, BanchoID]
     Map<String, List<Map<String, Integer>>> pool = new HashMap<>();
+
     Message inviteMessage = null;
     Message invitePlayerMessage = null;
+
     boolean isCreated = false;
     String tourneyName = null;
+
+    String roomName = null;
+    int matchID = 0;
 
     public Tourney() {
         players = new ArrayList<>();

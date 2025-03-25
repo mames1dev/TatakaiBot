@@ -98,6 +98,20 @@ public class CreateMatch extends ListenerAdapter {
         // 試合開始
         Main.tourney.setCreated(true);
         Main.ircClient.getBot().send().message("BanchoBot", "!mp make TatakaiBot Match | " + banchoName.get(0) + " vs " + banchoName.get(1));
+
+        Message m = Main.tourney.getInviteMessage();
+        Message m_p = Main.tourney.getInvitePlayerMessage();
+
+        m.editMessageEmbeds(
+            Embed.getInviteAcceptEmbed().build()
+        ).queue();
+
+        m_p.editMessageEmbeds(
+            Embed.getInviteAcceptPlayerEmbed().build()
+        ).queue();
+        m_p.removeReaction(Emoji.fromUnicode("U+2705")).queue();
+        m_p.removeReaction(Emoji.fromUnicode("U+274C")).queue();
+
         System.out.println("Created match: " + banchoName.get(0) + " vs " + banchoName.get(1));
     }
 

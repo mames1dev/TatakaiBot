@@ -55,11 +55,30 @@ public abstract class Embed {
                 .setTimestamp(new Date().toInstant());
     }
 
+
     public static EmbedBuilder getInviteDenyPlayerEmbed() {
         return new EmbedBuilder()
                 .setTitle("招待を拒否しました！")
                 .setDescription("この大会への招待を拒否しました！")
                 .setColor(Color.RED)
+                .setTimestamp(new Date().toInstant());
+    }
+
+    public static EmbedBuilder getInviteAcceptEmbed() {
+        return new EmbedBuilder()
+                .setTitle("招待が承認されました！")
+                .setDescription("この大会への招待が承認されました！\n" +
+                        "試合が開始されるまでお待ちください。")
+                .setColor(Color.GRAY)
+                .setTimestamp(new Date().toInstant());
+    }
+
+    public static EmbedBuilder getInviteAcceptPlayerEmbed() {
+        return new EmbedBuilder()
+                .setTitle("招待を承認しました！")
+                .setDescription("この大会への招待を承認しました！\n" +
+                        "試合が開始されるまでお待ちください。")
+                .setColor(Color.GRAY)
                 .setTimestamp(new Date().toInstant());
     }
 }
