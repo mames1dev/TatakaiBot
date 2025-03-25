@@ -6,9 +6,11 @@ import mames1.net.mamesosu.discord.Embed;
 import mames1.net.mamesosu.osu.UserAccount;
 import mames1.net.mamesosu.tournament.Tourney;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.sql.Connection;
@@ -18,6 +20,87 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class CreateMatch extends ListenerAdapter {
+
+    @Override
+    public void onMessageReactionAdd(MessageReactionAddEvent e) {
+
+        if(e.getUser().isBot()) {
+            return;
+        }
+
+        if(e.isFromGuild()) {
+            return;
+        }
+
+        User user = e.getUser();
+
+        // トーナメントが存在しない場合は処理を行わない
+        if(Main.tourney.getTourneyName() == null) {
+            user.openPrivateChannel()
+                    .flatMap(channel -> channel.sendMessageEmbeds(
+                            Embed.getErrorEmbed(
+                                    "この招待は無効です！\n" +
+                                            "もう一度招待を送信する必要があります。"
+                            ).build()
+                    )).queue();
+            return;
+        }
+
+        // リアクションが送信者のものでない場合は処理を行わない
+        if(e.getUserIdLong() != Main.tourney.getPlayers().get(1).keySet().iterator().next()) {
+            user.openPrivateChannel()
+                    .flatMap(channel -> channel.sendMessageEmbeds(
+                            Embed.getErrorEmbed(
+                                    "この招待は無効です！\n" +
+                                            "もう一度招待を送信する必要があります。"
+                            ).build()
+                    )).queue();
+            return;
+        }
+
+        if(Main.tourney.isCreated()) {
+            return;
+        }
+
+        if(e.getReaction().getEmoji().equals(Emoji.fromUnicode("U+274C"))) {
+            Message m = Main.tourney.getInviteMessage();
+            m.editMessageEmbeds(
+                Embed.getInviteDenyEmbed().build()
+            ).queue();
+
+            Message m_p = Main.tourney.getInvitePlayerMessage();
+
+            m_p.removeReaction(Emoji.fromUnicode("U+2705")).queue();
+            m_p.removeReaction(Emoji.fromUnicode("U+274C")).queue();
+
+            m_p.editMessageEmbeds(
+                Embed.getInviteDenyPlayerEmbed().build()
+            ).queue();
+
+            Main.tourney = new Tourney();
+
+            return;
+        }
+
+        if(!e.getReaction().getEmoji().equals(Emoji.fromUnicode("U+2705"))) {
+            return;
+        }
+
+        // プレイヤー情報取得
+        List<Integer> banchoID = new ArrayList<>();
+        List<String> banchoName = new ArrayList<>();
+
+        Main.tourney.getPlayers().forEach(map -> map.forEach((k, v) -> banchoID.add(v)));
+        for(int id : banchoID) {
+            banchoName.add(UserAccount.getUserName(String.valueOf(id)));
+        }
+
+        // 試合開始
+        Main.tourney.setCreated(true);
+        Main.ircClient.getBot().send().message("BanchoBot", "!mp make TatakaiBot Match | " + banchoName.get(0) + " vs " + banchoName.get(1));
+        System.out.println("Created match: " + banchoName.get(0) + " vs " + banchoName.get(1));
+    }
+
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
 
@@ -88,7 +171,6 @@ public class CreateMatch extends ListenerAdapter {
                 try {
                     Main.tourney = new Tourney();
                     List<String> t = Main.pool.getTourneyName();
-                    System.out.println(t);
 
                     if(!t.contains(tournamentName)) {
                         e.getMessage().replyEmbeds(
@@ -126,8 +208,15 @@ public class CreateMatch extends ListenerAdapter {
                                         Embed.getInviteEmbed(e.getMember(), args).build()
                                 )).queue((msg)-> {
                                     msg.addReaction(Emoji.fromUnicode("U+2705")).queue();
+                                    msg.addReaction(Emoji.fromUnicode("U+274C")).queue();
+                                    Main.tourney.setInvitePlayerMessage(msg);
                             });
-                    System.out.println("試合招待を送信しました。");
+
+                    e.getMessage().replyEmbeds(
+                        Embed.getInviteSuccessEmbed().build()
+                    ).queue((msg) -> {
+                        Main.tourney.setInviteMessage(msg);
+                    });
 
                 } catch (Exception ex) {
                     ex.printStackTrace();

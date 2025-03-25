@@ -15,6 +15,9 @@ public class ReceiveCode extends ListenerAdapter {
     @Override
     public void onGenericMessage(GenericMessageEvent e) {
 
+        // for debug
+        System.out.println(e.getMessage());
+
         MySQL mySQL = new MySQL();
         PreparedStatement ps;
         ResultSet result;

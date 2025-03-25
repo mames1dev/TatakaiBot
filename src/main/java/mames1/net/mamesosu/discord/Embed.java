@@ -26,13 +26,40 @@ public abstract class Embed {
                 .setTimestamp(new Date().toInstant());
     }
 
+    public static EmbedBuilder getInviteSuccessEmbed() {
+        return new EmbedBuilder()
+                .setTitle("招待に成功しました！")
+                .setDescription("招待が成功しました！\n" +
+                        "相手がリアクションをするまでお待ちください。")
+                .setColor(Color.GRAY)
+                .setTimestamp(new Date().toInstant());
+    }
+
     public static EmbedBuilder getInviteEmbed(Member m, String[] args) {
         return new EmbedBuilder()
                 .setTitle("試合へ参加しますか？")
                 .setDescription("**" + m.getEffectiveName() + "**さんが、**" + args[1] + "**を、**" + args[2] + "**に招待しました！\n" +
-                        "このメッセージにリアクションをすると、試合に参加することができます。\n" +
-                        "Rikuimaから招待を受けられるよう、ログインをして待機してください。")
+                        ":white_check_mark: をクリックすると、試合が自動で作成されます。\n" +
+                        ":x: をクリックすると、招待を拒否することができます。\n" +
+                        "参加する場合は、Rikuimaから招待を受けられるよう、ログインをして待機してください。")
                 .setColor(Color.GRAY)
+                .setTimestamp(new Date().toInstant());
+    }
+
+    public static EmbedBuilder getInviteDenyEmbed() {
+        return new EmbedBuilder()
+                .setTitle("招待が破棄されました！")
+                .setDescription("招待したプレイヤーが招待を拒否しました！\n" +
+                        "もう一度招待を行う場合は、招待を送信してください。")
+                .setColor(Color.RED)
+                .setTimestamp(new Date().toInstant());
+    }
+
+    public static EmbedBuilder getInviteDenyPlayerEmbed() {
+        return new EmbedBuilder()
+                .setTitle("招待を拒否しました！")
+                .setDescription("この大会への招待を拒否しました！")
+                .setColor(Color.RED)
                 .setTimestamp(new Date().toInstant());
     }
 }

@@ -2,6 +2,7 @@ package mames1.net.mamesosu.tournament;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,10 @@ public class Tourney {
 
     List<Map<Long, Integer>> players; // [DiscordID, BanchoID]
     Map<String, List<Map<String, Integer>>> pool = new HashMap<>();
-    String tourneyName;
+    Message inviteMessage = null;
+    Message invitePlayerMessage = null;
+    boolean isCreated = false;
+    String tourneyName = null;
 
     public Tourney() {
         players = new ArrayList<>();
