@@ -21,7 +21,7 @@ public abstract class Embed {
         return new EmbedBuilder()
                 .setTitle("アカウントをリンクする")
                 .setDescription("あなたの認証コードは以下の通りです。\n" +
-                        "Banchoにログインし、**" + Main.ircClient.getName() + "** に次のメッセージを送信してください。")
+                        "Banchoにログインし **" + Main.ircClient.getName() + "** に次のメッセージを送信してください。")
                 .addField("コード","```" + code + "```", false)
                 .setColor(Color.GRAY)
                 .setTimestamp(new Date().toInstant());
@@ -40,7 +40,7 @@ public abstract class Embed {
         return new EmbedBuilder()
                 .setTitle("試合へ参加しますか？")
                 .setDescription("**" + m.getEffectiveName() + "**さんが、**" + args[1] + "**を、**" + args[2] + "**に招待しました！\n" +
-                        "参加する場合は、**" + Main.ircClient.getName() + "** から招待を受けられるよう、ログインをして待機してください。\"")
+                        "参加する場合は **" + Main.ircClient.getName() + "** から招待を受けられるよう、ログインをして待機してください。")
                 .addField("使い方", """
                         * :white_check_mark: をクリックすると、試合が自動で作成
                         * :x: をクリックで、招待を拒否
