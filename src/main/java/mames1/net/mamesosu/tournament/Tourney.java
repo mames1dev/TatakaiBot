@@ -23,6 +23,8 @@ public class Tourney {
     boolean isCreated = false;
     String tourneyName = null;
 
+    String channel = null;
+
     String roomName = null;
     int matchID = 0;
 
