@@ -1,6 +1,7 @@
 package mames1.net.mamesosu.discord;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 
 import java.awt.*;
 import java.util.Date;
@@ -25,10 +26,10 @@ public abstract class Embed {
                 .setTimestamp(new Date().toInstant());
     }
 
-    public static EmbedBuilder getInviteEmbed(String[] args) {
+    public static EmbedBuilder getInviteEmbed(Member m, String[] args) {
         return new EmbedBuilder()
                 .setTitle("試合へ参加しますか？")
-                .setDescription(args[1] + "さんが" + args[2] + "を試合に招待しました！\n" +
+                .setDescription("**" + m.getEffectiveName() + "**さんが、**" + args[1] + "**を、**" + args[2] + "**に招待しました！\n" +
                         "このメッセージにリアクションをすると、試合に参加することができます。\n" +
                         "Rikuimaから招待を受けられるよう、ログインをして待機してください。")
                 .setColor(Color.GRAY)

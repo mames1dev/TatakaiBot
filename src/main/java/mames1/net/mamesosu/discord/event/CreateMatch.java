@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class CreateMatch extends ListenerAdapter {
-
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
 
@@ -34,6 +33,7 @@ public class CreateMatch extends ListenerAdapter {
                                         "正しい使い方: !match <招待するプレイヤー> <トーナメント名>"
                         ).build()
                 ).queue();
+                return;
             }
 
             String tournamentName = String.join(" ", Arrays.copyOfRange(args, 2, args.length)).toLowerCase();
@@ -123,7 +123,7 @@ public class CreateMatch extends ListenerAdapter {
 
                     user.openPrivateChannel()
                                 .flatMap(channel -> channel.sendMessageEmbeds(
-                                        Embed.getInviteEmbed(args).build()
+                                        Embed.getInviteEmbed(e.getMember(), args).build()
                                 )).queue((msg)-> {
                                     msg.addReaction(Emoji.fromUnicode("U+2705")).queue();
                             });

@@ -41,6 +41,17 @@ public class LinkAccount extends ListenerAdapter {
 
         if(e.getMessage().getContentRaw().contains("!link")) {
             String[] args = e.getMessage().getContentRaw().split(" ");
+
+            if(args.length < 2) {
+                e.getMessage().replyEmbeds(
+                        Embed.getErrorEmbed(
+                                "引数が不足しているか、正しくありません！\n" +
+                                        "正しい使い方: !link <BanchoID>"
+                        ).build()
+                ).queue();
+                return;
+            }
+
             String banchoID = args[1];
 
             if(!UserAccount.isExist(banchoID)) {
