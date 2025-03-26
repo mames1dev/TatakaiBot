@@ -177,6 +177,14 @@ public class CreateMatch extends ListenerAdapter {
 
                 if(result.next()) {
                     playerList.add(Map.of(result.getLong("discord_id"), p));
+                } else {
+                    e.getMessage().replyEmbeds(
+                            Embed.getErrorEmbed(
+                                    "指定されたプレイヤーが存在しません！\n" +
+                                                 "プレイヤー名をもう一度確認してみてください！"
+                            ).build()
+                    ).queue();
+                    return;
                 }
 
                 // プレイヤーチェック完了
