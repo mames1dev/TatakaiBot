@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.entities.Message;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // 大会情報を保存 (使用する度に初期化する)
 @Setter
@@ -16,24 +13,48 @@ public class Tourney {
 
     List<Map<Long, Integer>> players; // [DiscordID, BanchoID]
     List<Integer> playerIDList = new ArrayList<>(); // BanchoID
-    Map<String, List<Map<String, Integer>>> pool = new HashMap<>();
+
+    Map<String, List<Map<String, Integer>>> pool = new HashMap<>(); // pool
+    Map<String, String> banMaps = new HashMap<>(); // Team, Slot
 
     Message inviteMessage = null;
     Message invitePlayerMessage = null;
 
-    Map<String, String> teamMember = new HashMap<>();
+    Map<String, String> teamMember = new HashMap<>(); // TeamName, BanchoID
+
+    Map<String, Integer> rollScore = new HashMap<>();
 
     boolean isAllPlayerJoined = false;
     boolean isCreated = false;
-    String tourneyName = null;
+
+    Map<String, Boolean> allBanned = new HashMap<>();
+
+    String currentPickTeam = null;
+    String currentBanTeam = null;
 
     String channel = null;
-
+    String tourneyName = null;
     String roomName = null;
     int matchID = 0;
-
+    int bo = 9;
 
     public Tourney() {
         players = new ArrayList<>();
+
+        allBanned.put("red", false);
+        allBanned.put("blue", false);
+    }
+
+    public String getTeamMemberFromTeam(String teamName) {
+        return teamMember.get(teamName);
+    }
+
+    public String getTeamNameFromUser(String banchoID) {
+        for (Map.Entry<String, String> entry : teamMember.entrySet()) {
+            if (entry.getValue().equals(banchoID)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

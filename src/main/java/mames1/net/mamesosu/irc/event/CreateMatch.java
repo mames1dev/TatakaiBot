@@ -15,6 +15,10 @@ public class CreateMatch extends ListenerAdapter {
     @Override
     public void onGenericMessage(GenericMessageEvent e) {
 
+        if(!e.getUser().getNick().equals("BanchoBot")) {
+            return;
+        }
+
         if(!e.getMessage().contains("Created the tournament match")) {
             return;
         }

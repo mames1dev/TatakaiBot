@@ -3,9 +3,8 @@ package mames1.net.mamesosu.irc;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.opencensus.trace.Link;
 import lombok.Getter;
-import mames1.net.mamesosu.irc.event.CheckJoin;
-import mames1.net.mamesosu.irc.event.CreateMatch;
-import mames1.net.mamesosu.irc.event.ReceiveCode;
+import mames1.net.mamesosu.irc.event.*;
+import net.dv8tion.jda.api.entities.Guild;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 
@@ -43,6 +42,9 @@ public class IRCClient {
                 .addListener(new ReceiveCode())
                 .addListener(new CreateMatch())
                 .addListener(new CheckJoin())
+                .addListener(new Roll())
+                .addListener(new BanMap())
+                .addListener(new DebugClose())
                 .buildConfiguration();
 
         bot = new PircBotX(configuration);

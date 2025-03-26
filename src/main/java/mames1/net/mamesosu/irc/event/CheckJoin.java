@@ -13,6 +13,10 @@ public class CheckJoin extends ListenerAdapter {
     @Override
     public void onGenericMessage(GenericMessageEvent e) {
 
+        if(!e.getUser().getNick().equals("BanchoBot")) {
+            return;
+        }
+
         if(!e.getMessage().contains("joined in slot")) {
             return;
         }
@@ -42,8 +46,8 @@ public class CheckJoin extends ListenerAdapter {
             // ボッチデバッグ用
             if(playerTeam.size() == 1 ? Main.ircClient.isDebug() : playerTeam.size() == 2) {
                 Main.tourney.setAllPlayerJoined(true);
-                e.getBot().send().message(Main.tourney.getChannel(), "TatakaiBotへようこそ!　このマッチは、" + Main.tourney.getTourneyName() + "のプールによって進行されます。");
-                e.getBot().send().message(Main.tourney.getChannel(), "!mp close");
+                e.getBot().send().message(Main.tourney.getChannel(), "TatakaiBotへようこそ!　このマッチは、" + Main.tourney.getTourneyName() + "のプールによって進行されます。Best of 9で行われます。");
+                e.getBot().send().message(Main.tourney.getChannel(), "それではrollをしてください。rollが高かった人が1st Ban 2nd Pickになります。");
             }
         }
     }
