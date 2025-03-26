@@ -33,6 +33,7 @@ public class CreateMatch extends ListenerAdapter {
             Main.tourney.setMatchID(Integer.parseInt(matchID));
             Main.tourney.setRoomName(matchName);
             Main.tourney.setChannel(channel); // #mpのリンク
+            Main.tourney.setPlayerIDList(player);
 
             Main.ircClient.getBot().send().message(channel, "!mp size 2");
             Main.ircClient.getBot().send().message(channel, "!mp set 2 3");
@@ -42,9 +43,10 @@ public class CreateMatch extends ListenerAdapter {
                 Main.ircClient.getBot().send().message(channel, "!mp invite " + name);
             }
 
+            /*
             if(Main.ircClient.isDebug()) {
                 Main.ircClient.getBot().send().message(channel, "!mp close");
-            }
+            }*/
         } else {
             System.out.println("Match ID not found");
         }

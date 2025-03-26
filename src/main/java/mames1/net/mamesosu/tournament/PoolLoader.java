@@ -49,6 +49,7 @@ public class PoolLoader {
         return new int[] {0, 0};
     }
 
+
     // load all pools
     // ["pool_name": [{"NM1": 1}, {"NM2": 2}, ...], ...]
     public List<Map<String, List<Map<String, Integer>>>> loadAllPool() throws IOException, GeneralSecurityException {
