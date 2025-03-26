@@ -190,7 +190,7 @@ public class CreateMatch extends ListenerAdapter {
                         e.getMessage().replyEmbeds(
                                 Embed.getErrorEmbed(
                                         "指定されたトーナメントが存在しません！\n" +
-                                                "トーナメント名をもう一度確認してみてください！"
+                                                "``!pool`` で確認してみてください！"
                                 ).build()
                         ).queue();
                         return;

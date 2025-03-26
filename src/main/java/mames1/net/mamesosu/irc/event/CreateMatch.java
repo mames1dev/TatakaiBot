@@ -35,6 +35,7 @@ public class CreateMatch extends ListenerAdapter {
             Main.tourney.setChannel(channel); // #mpのリンク
 
             Main.ircClient.getBot().send().message(channel, "!mp size 2");
+            Main.ircClient.getBot().send().message(channel, "!mp set 2 3");
 
             for(int i : player) {
                 String name = UserAccount.getUserName(String.valueOf(i));
