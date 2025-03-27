@@ -2,7 +2,6 @@ package mames1.net.mamesosu.irc.event;
 
 import mames1.net.mamesosu.Main;
 import mames1.net.mamesosu.osu.UserAccount;
-import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -65,9 +64,7 @@ public class BanMap extends ListenerAdapter {
             banMaps.put(teamName, args[1]);
 
             String p = Main.tourney.getTeamMemberFromTeam(teamName);
-            System.out.println(p);
             String pName = UserAccount.getUserName(p);
-            System.out.println(pName);
 
             e.getBot().send().message(Main.tourney.getChannel(),  pName + "は、" + args[1] + "をbanしました。");
 

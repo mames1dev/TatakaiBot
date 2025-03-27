@@ -5,6 +5,8 @@ import lombok.Setter;
 import net.dv8tion.jda.api.entities.Message;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // 大会情報を保存 (使用する度に初期化する)
 @Setter
@@ -27,8 +29,12 @@ public class Tourney {
 
     boolean isAllPlayerJoined = false;
     boolean isCreated = false;
+    boolean isPickEnd = false;
+    boolean isMatch = false;
 
     Map<String, Boolean> allBanned = new HashMap<>();
+
+    Map<String, List<String>> pickedMaps = new HashMap<>();
 
     String currentPickTeam = null;
     String currentBanTeam = null;
@@ -36,6 +42,7 @@ public class Tourney {
     String channel = null;
     String tourneyName = null;
     String roomName = null;
+
     int matchID = 0;
     int bo = 9;
 
@@ -47,6 +54,9 @@ public class Tourney {
 
         teamScore.put("red", 0);
         teamScore.put("blue", 0);
+
+        pickedMaps.put("red", new ArrayList<>());
+        pickedMaps.put("blue", new ArrayList<>());
     }
 
     public String getTeamMemberFromTeam(String teamName) {
@@ -62,5 +72,44 @@ public class Tourney {
             }
         }
         return null;
+    }
+
+    public Integer getValueFromPool(String poolName, String slot) {
+        List<Map<String, Integer>> list = pool.get(poolName);
+        if (list == null) return null; // 指定キーが存在しない場合
+
+        for (Map<String, Integer> map : list) {
+            if (map.containsKey(slot)) {
+                return map.get(slot);
+            }
+        }
+
+        return null; // 何も見つからなかった場合
+    }
+
+    public String getMod(String slot) {
+        Pattern pattern = Pattern.compile("^(HR|DT|FL|HD|FI|FM|NM|EZ|RX|HT|SD|PF|AP)\\d*$");
+        Matcher matcher = pattern.matcher(slot);
+
+        if(matcher.find()) {
+            return switch (matcher.group(1)) {
+                case "NM" -> "None";
+                case "FM" -> "FreeMod";
+                case "EZ" -> "2";
+                case "RX" -> "128";
+                case "HT" -> "256";
+                case "SD" -> "32";
+                case "PF" -> "16384";
+                case "AP" -> "8192";
+                default -> matcher.group(1);
+            };
+
+        } else {
+            return "FreeMod";
+        }
+    }
+
+    public int getPickCount() {
+        return pickedMaps.get("red").size() + pickedMaps.get("blue").size();
     }
 }

@@ -6,6 +6,7 @@ import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class DebugClose extends ListenerAdapter {
 
+    // 非常用のマッチ強制終了コマンド
     @Override
     public void onGenericMessage(GenericMessageEvent e) {
 
