@@ -23,6 +23,7 @@ public class Tourney {
     Map<String, String> teamMember = new HashMap<>(); // TeamName, BanchoID
 
     Map<String, Integer> rollScore = new HashMap<>();
+    Map<String, Integer> teamScore = new HashMap<>(); // TeamName, Score
 
     boolean isAllPlayerJoined = false;
     boolean isCreated = false;
@@ -43,6 +44,9 @@ public class Tourney {
 
         allBanned.put("red", false);
         allBanned.put("blue", false);
+
+        teamScore.put("red", 0);
+        teamScore.put("blue", 0);
     }
 
     public String getTeamMemberFromTeam(String teamName) {
@@ -50,9 +54,11 @@ public class Tourney {
     }
 
     public String getTeamNameFromUser(String banchoID) {
-        for (Map.Entry<String, String> entry : teamMember.entrySet()) {
-            if (entry.getValue().equals(banchoID)) {
-                return entry.getKey();
+        if(teamMember.containsValue(banchoID)) {
+            for (Map.Entry<String, String> entry : teamMember.entrySet()) {
+                if (entry.getValue().equals(banchoID)) {
+                    return entry.getKey();
+                }
             }
         }
         return null;
