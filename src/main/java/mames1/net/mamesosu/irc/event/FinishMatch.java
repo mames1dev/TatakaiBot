@@ -63,49 +63,6 @@ public class FinishMatch extends ListenerAdapter {
     }
 
 
-
-
-
-     private String getResult() {
-        List<Integer> winTeam = new ArrayList<>(Main.tourney.getWinTeam().stream().toList());
-
-        Map<String, List<String>> pickMaps = Main.tourney.getPickedMaps();
-        List<String> redPicks = pickMaps.getOrDefault("red", new ArrayList<>());
-        List<String> bluePicks = pickMaps.getOrDefault("blue", new ArrayList<>());
-
-        StringBuilder s = new StringBuilder();
-        int index = 0;
-        int redIndex = 0, blueIndex = 0;
-        boolean isRedTurn = Main.tourney.getCurrentBanTeam().equals("red"); // 最初のピックを決定
-
-        while (redIndex < redPicks.size() || blueIndex < bluePicks.size()) {
-            if (isRedTurn && redIndex < redPicks.size()) {
-                String pick = redPicks.get(redIndex++);
-                if (s.length() > 0) s.append("\n");
-                if(pick.contains("TB")) {
-                    s.append(":fire: picked ``").append(pick).append("`` ").append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!");
-                } else {
-                    s.append(":red_square: picked ``").append(pick).append("`` ").append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!");
-                }
-                index++;
-            } else if (!isRedTurn && blueIndex < bluePicks.size()) {
-                String pick = bluePicks.get(blueIndex++);
-                if (s.length() > 0) s.append("\n");
-                if(pick.contains("TB")) {
-                   s.append(":fire: picked ``").append(pick).append("`` ").append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!");
-                } else {
-                    s.append(":blue_square: picked ``").append(pick).append("`` ").append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!");
-                }
-                index++;
-            }
-            isRedTurn = !isRedTurn; // ピックのターンを交互に切り替え
-        }
-
-        return s.toString();
-    }
-
-
-
     @Override
     public void onGenericMessage(GenericMessageEvent e) {
 
