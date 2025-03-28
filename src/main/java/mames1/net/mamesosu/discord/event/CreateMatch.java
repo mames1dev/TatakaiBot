@@ -194,7 +194,7 @@ public class CreateMatch extends ListenerAdapter {
                     if(!Main.tourney.getPlayers().isEmpty()) {
                         e.getMessage().replyEmbeds(
                                 Embed.getErrorEmbed(
-                                        "現在進行中の試合があるため、部屋を作成できません。\n" +
+                                        "現在進行中の試合があるため、招待を作成できません。\n" +
                                                 "終了までお待ちください。"
                                 ).build()
                         ).queue();
