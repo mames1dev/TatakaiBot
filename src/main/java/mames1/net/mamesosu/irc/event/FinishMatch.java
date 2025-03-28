@@ -188,7 +188,7 @@ public class FinishMatch extends ListenerAdapter {
                         Map<String, List<String>> pickMaps = Main.tourney.getPickedMaps();
 
                         Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "同点になりました。");
-                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "Tiebreakerを行います  。");
+                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "Tiebreakerを行います！頑張ってください。");
                         Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp map " + mapID);
                         Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp mods FreeMod");
                         Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp timer cancel");

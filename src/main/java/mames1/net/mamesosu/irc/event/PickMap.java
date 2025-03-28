@@ -63,6 +63,11 @@ public class PickMap extends ListenerAdapter {
             return;
         }
 
+        if(args[1].contains("TB")) {
+            e.getBot().send().message(Main.tourney.getChannel(), "この譜面はTB譜面です。");
+            return;
+        }
+
         if(!Objects.equals(teamName, currentPickTeam)) {
             e.getBot().send().message(Main.tourney.getChannel(), "あなたはこの譜面をpickする権利がありません。");
             return;
