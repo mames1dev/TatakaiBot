@@ -11,6 +11,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import io.github.cdimascio.dotenv.Dotenv;
+import mames1.net.mamesosu.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,14 @@ public class SpreadSheets {
 
     private static Credential authorize() throws IOException, GeneralSecurityException {
 
-        InputStream in = SpreadSheets.class.getResourceAsStream("/credentials.json");
+        InputStream in;
+
+        if(!Main.ircClient.isDebug()) {
+            in = SpreadSheets.class.getResourceAsStream("/credentials.json");
+        } else {
+           in = SpreadSheets.class.getResourceAsStream("/credentials_debug.json");
+        }
+
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(
                 GsonFactory.getDefaultInstance(), new InputStreamReader(in)
         );

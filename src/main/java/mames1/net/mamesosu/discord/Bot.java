@@ -13,12 +13,11 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
+@Getter
 public class Bot {
 
-    @Getter
     String token;
     String presence;
-    @Getter
     JDA jda;
 
     public Bot() {

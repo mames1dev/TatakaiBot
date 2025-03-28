@@ -4,6 +4,7 @@ import mames1.net.mamesosu.Main;
 import mames1.net.mamesosu.discord.Embed;
 import mames1.net.mamesosu.tournament.Tourney;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
@@ -35,6 +36,7 @@ public class LeavePlayer extends ListenerAdapter {
                     Embed.getAbortMatch(String.valueOf(Main.tourney.getMatchID())).build()
             ).queue((msg) -> {
                 Main.tourney = new Tourney();
+                Main.bot.getJda().getPresence().setActivity(Activity.playing(Main.bot.getPresence()));
             });
         }
     }

@@ -122,18 +122,42 @@ public class CreateMatch extends ListenerAdapter {
             String[] args = e.getMessage().getContentRaw().split(" ");
             List<Map<Long, Integer>> playerList = new ArrayList<>();
             Map<String, List<Map<String, Integer>>> pool;
+            int bo = -1;
 
             if(args.length < 3) {
                 e.getMessage().replyEmbeds(
                         Embed.getErrorEmbed(
                                 "引数が不足しているか、正しくありません！\n" +
-                                        "正しい使い方: !match <招待するプレイヤー> <トーナメント名>"
+                                        "正しい使い方: !match <招待するプレイヤーのID> <トーナメント名> <bo(オプション)>"
                         ).build()
                 ).queue();
                 return;
             }
 
-            String tournamentName = String.join(" ", Arrays.copyOfRange(args, 2, args.length)).toLowerCase();
+            String tournamentName = args[2].toLowerCase();
+
+            // boが指定されている場合
+            if(args.length == 4) {
+                try {
+                    bo = Integer.parseInt(args[3]);
+
+                    if (bo % 2 == 0) {
+                        e.getMessage().replyEmbeds(
+                                Embed.getErrorEmbed(
+                                        "Best ofは奇数の数字で指定してください！"
+                                ).build()
+                        ).queue();
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    e.getMessage().replyEmbeds(
+                            Embed.getErrorEmbed(
+                                    "Best ofは奇数の数字で指定してください！"
+                            ).build()
+                    ).queue();
+                    return;
+                }
+            }
 
             MySQL mySQL = new MySQL();
             Connection connection = mySQL.getConnection();
@@ -225,6 +249,11 @@ public class CreateMatch extends ListenerAdapter {
 
                     // トーナメント名をセット
                     Main.tourney.setTourneyName(tournamentName);
+
+                    // Best ofセット
+                    if(bo != -1) {
+                        Main.tourney.setBo(bo);
+                    }
 
                     // player2に招待を送信
                     List<Long> discordUsers = playerList.stream()

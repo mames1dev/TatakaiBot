@@ -116,6 +116,6 @@ public class PoolLoader {
             ));
         }
 
-        return Map.of(name_values.get(0).get(0).toString().toLowerCase() , pool);
+        return Map.of(name_values.get(0).get(0).toString().toLowerCase().replaceAll(" ", "_") , pool);
     }
 }

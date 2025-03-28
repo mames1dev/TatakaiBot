@@ -2,6 +2,7 @@ package mames1.net.mamesosu.irc.event;
 
 import mames1.net.mamesosu.Main;
 import mames1.net.mamesosu.osu.UserAccount;
+import net.dv8tion.jda.api.entities.Activity;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -92,6 +93,9 @@ public class BanMap extends ListenerAdapter {
                 e.getBot().send().message(Main.tourney.getChannel(), banMaps.get("blue") + "と" + banMaps.get("red") + "のマップがbanされました。");
                 e.getBot().send().message(Main.tourney.getChannel(), UserAccount.getUserName(teamMember.get("red")) + " " + teamScore.get("red") + " - " + teamScore.get("blue") + " " + UserAccount.getUserName(teamMember.get("blue")) +
                         " | Pick: " + pName + " | Bo" + Main.tourney.getBo());
+
+                Main.bot.getJda().getPresence().setActivity(Activity.playing("ただいま試合中 (bo" + Main.tourney.getBo() + " " + teamScore.get("red") + ":" + teamScore.get("blue") + ")"));
+
                 e.getBot().send().message(Main.tourney.getChannel(), pName + "はpickを行ってください。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!pick <slot> にてpickを行うことができます。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 60");

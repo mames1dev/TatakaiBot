@@ -3,6 +3,7 @@ package mames1.net.mamesosu.irc.event;
 import mames1.net.mamesosu.Main;
 import mames1.net.mamesosu.osu.UserAccount;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
@@ -99,6 +100,8 @@ public class FinishMatch extends ListenerAdapter {
 
                 Main.tourney.setTeamScore(teamScore);
 
+                Main.bot.getJda().getPresence().setActivity(Activity.playing("ただいま試合中 (bo" + Main.tourney.getBo() + " " + teamScore.get("red") + ":" + teamScore.get("blue") + ")"));
+
                 Main.tourney.setWinTeam(winTeam);
                 Main.tourney.setMatch(false);
 
@@ -129,6 +132,7 @@ public class FinishMatch extends ListenerAdapter {
                             "この部屋は60秒後に自動で閉じられます。");
                     Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp timer 60");
                     Main.tourney.setGameEnd(true);
+                    Main.bot.getJda().getPresence().setActivity(Activity.playing(Main.bot.getPresence()));
 
                     return;
                 }
