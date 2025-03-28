@@ -15,6 +15,57 @@ import java.util.regex.Pattern;
 
 public class FinishMatch extends ListenerAdapter {
 
+    private String getPickResult() {
+        List<Integer> winTeam = new ArrayList<>(Main.tourney.getWinTeam().stream().toList());
+        Map<String, List<String>> pickMaps = Main.tourney.getPickedMaps();
+
+        List<String> redPicks = pickMaps.getOrDefault("red", new ArrayList<>());
+        List<String> bluePicks = pickMaps.getOrDefault("blue", new ArrayList<>());
+
+        StringBuilder s = new StringBuilder();
+        int index = 0;
+        int redIndex = 0, blueIndex = 0;
+        boolean redTurn = Main.tourney.getCurrentBanTeam().equals("blue");  // ここを false にすると blue から開始
+        System.out.println("redTurn: " + redTurn);
+
+        while (redIndex < redPicks.size() || blueIndex < bluePicks.size()) {
+            if (redTurn && redIndex < redPicks.size()) {
+                System.out.println(index + ": red picked " + redPicks.get(redIndex));
+
+                if (redPicks.get(redIndex).contains("TB")) {
+                    s.append(":fire: picked ``").append(redPicks.get(redIndex)).append("`` ")
+                     .append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!\n");
+                } else {
+                    s.append(":red_square: picked ``").append(redPicks.get(redIndex)).append("`` ")
+                     .append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!\n");
+                }
+                redIndex++;
+                index++;  // インデックスはここで更新する
+                redTurn = false;  // 次は blue のターン
+            }
+            else if (!redTurn && blueIndex < bluePicks.size()) {
+                System.out.println(index + ": blue picked " + bluePicks.get(blueIndex));
+
+                if (bluePicks.get(blueIndex).contains("TB")) {
+                    s.append(":fire: picked ``").append(bluePicks.get(blueIndex)).append("`` ")
+                     .append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!\n");
+                } else {
+                    s.append(":blue_square: picked ``").append(bluePicks.get(blueIndex)).append("`` ")
+                     .append(winTeam.get(index) == 1 ? ":red_square:" : ":blue_square:").append(" wins!\n");
+                }
+                blueIndex++;
+                index++;  // インデックスはここで更新する
+                redTurn = true;  // 次は red のターン
+            }
+        }
+
+        return s.toString();
+    }
+
+
+
+
+
      private String getResult() {
         List<Integer> winTeam = new ArrayList<>(Main.tourney.getWinTeam().stream().toList());
 
@@ -54,6 +105,7 @@ public class FinishMatch extends ListenerAdapter {
     }
 
 
+
     @Override
     public void onGenericMessage(GenericMessageEvent e) {
 
@@ -68,6 +120,11 @@ public class FinishMatch extends ListenerAdapter {
             Map<String, Integer> playerScore = Main.tourney.getTeamEachScore();
             String team = Main.tourney.getTeamNameFromUser(String.valueOf(UserAccount.getUserID(matcher.group(1).replace(" ", "_"))));
 
+            // 重複したスコアを無視
+            if(!playerScore.get(team).equals(-1)) {
+                return;
+            }
+
             playerScore.put(team, Integer.parseInt(matcher.group(2)));
 
             if(playerScore.get("red") != -1 && playerScore.get("blue") != -1) {
@@ -77,10 +134,10 @@ public class FinishMatch extends ListenerAdapter {
 
                 if(playerScore.get("red") > playerScore.get("blue")) {
                     winTeam.add(1);
-                    teamScore.put("red", teamScore.get(team) + 1);
+                    teamScore.put("red", teamScore.get("red") + 1);
                 }  else {
                     winTeam.add(2);
-                    teamScore.put("blue", teamScore.get(team) + 1);
+                    teamScore.put("blue", teamScore.get("blue") + 1);
                 }
 
                 Main.tourney.setTeamScore(teamScore);
@@ -89,7 +146,7 @@ public class FinishMatch extends ListenerAdapter {
                 Main.tourney.setMatch(false);
 
                 Main.ircClient.getBot().send().message(Main.tourney.getChannel(),  UserAccount.getUserName(Main.tourney.getTeamMember().get("red")) + " " + Main.tourney.getTeamScore().get("red") + " - " + Main.tourney.getTeamScore().get("blue") + " " + UserAccount.getUserName(Main.tourney.getTeamMember().get("blue")) +
-                             " | Pick: " + UserAccount.getUserName(Main.tourney.getTeamMember().get(Main.tourney.getCurrentPickTeam().equals("red") ? "blue" : "red")) + " | Bo9");
+                             " | Pick: " + UserAccount.getUserName(Main.tourney.getTeamMember().get(Main.tourney.getCurrentPickTeam().equals("red") ? "blue" : "red")) + " | Bo" + Main.tourney.getBo());
 
                 // マッチ閉じる動作書く
                 if(Main.tourney.getTeamScore().get("red") == (Main.tourney.getBo() + 1) / 2 || Main.tourney.getTeamScore().get("blue") == (Main.tourney.getBo() + 1) / 2) {
@@ -102,7 +159,7 @@ public class FinishMatch extends ListenerAdapter {
                     eb.addField("Mappool", Main.tourney.getTourneyName(), false);
                     eb.addField("Ban",  UserAccount.getUserName(Main.tourney.getTeamMember().get("red")) + ": ``" + Main.tourney.getBanMaps().values().stream().toList().get(0) + "``\n" +
                             UserAccount.getUserName(Main.tourney.getTeamMember().get("blue")) + ": ``" + Main.tourney.getBanMaps().values().stream().toList().get(1) + "``", false);
-                    eb.addField("Pick", getResult(), false);
+                    eb.addField("Pick", getPickResult(), false);
                     eb.setColor(team1 > team2 ? Color.RED : Color.BLUE);
                     eb.setTimestamp(new Date().toInstant());
 
@@ -121,19 +178,32 @@ public class FinishMatch extends ListenerAdapter {
 
                 if(Main.tourney.getTeamScore().get("red") == ((Main.tourney.getBo() + 1) / 2 - 1) && Main.tourney.getTeamScore().get("blue") == (Main.tourney.getBo() + 1) / 2 - 1) {
 
-                    int mapID = Main.tourney.getValueFromPool(Main.tourney.getTourneyName(), "TB");
-                    Map<String, List<String>> pickMaps = Main.tourney.getPickedMaps();
+                    // TBがない場合も考慮
+                    if(Main.tourney.getValueFromPool(Main.tourney.getTourneyName(), Main.tourney.getValueFromPool(Main.tourney.getTourneyName(), "TB") == null ? "TB1" : "TB") != null) {
 
-                    Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp map " + mapID);
-                    Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp mods FreeMod");
-                    Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp timer cancel");
-                    Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp timer 120");
+                        int mapID = Main.tourney.getValueFromPool(Main.tourney.getTourneyName(), Main.tourney.getValueFromPool(Main.tourney.getTourneyName(), "TB") == null ? "TB1" : "TB");
 
-                    pickMaps.get(Main.tourney.getCurrentPickTeam()).add("TB");
-                    Main.tourney.setPickedMaps(pickMaps);
+                        String slot = Main.tourney.getValueFromPool(Main.tourney.getTourneyName(), "TB") == null ? "TB1" : "TB";
 
-                    Main.tourney.setPickEnd(true);
-                    return;
+                        Map<String, List<String>> pickMaps = Main.tourney.getPickedMaps();
+
+                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "同点になりました。");
+                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "Tiebreakerを行います  。");
+                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp map " + mapID);
+                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp mods FreeMod");
+                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp timer cancel");
+                        Main.ircClient.getBot().send().message(Main.tourney.getChannel(), "!mp timer 120");
+
+                        pickMaps.get(Main.tourney.getCurrentPickTeam()).add(slot);
+                        Main.tourney.setPickedMaps(pickMaps);
+
+                        playerScore.put("red", -1);
+                        playerScore.put("blue", -1);
+
+                        Main.tourney.setTeamEachScore(playerScore);
+                        Main.tourney.setPickEnd(true);
+                        return;
+                    }
                 }
 
                 String pName = UserAccount.getUserName(Main.tourney.getTeamMemberFromTeam(Main.tourney.getCurrentPickTeam()));

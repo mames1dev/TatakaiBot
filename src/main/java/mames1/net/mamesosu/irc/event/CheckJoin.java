@@ -40,7 +40,7 @@ public class CheckJoin extends ListenerAdapter {
 
             if(playerTeam.size() == 2) {
                 Main.tourney.setAllPlayerJoined(true);
-                e.getBot().send().message(Main.tourney.getChannel(), "TatakaiBotへようこそ!　このマッチは、" + Main.tourney.getTourneyName() + "のプールによって進行されます。Best of 9で行われます。");
+                e.getBot().send().message(Main.tourney.getChannel(), "TatakaiBotへようこそ!　このマッチは、" + Main.tourney.getTourneyName() + "のプールによって進行されます。Best of " + Main.tourney.getBo() + "で行われます。");
                 e.getBot().send().message(Main.tourney.getChannel(), "それではrollをしてください。rollが高かった人が1st Ban 2nd Pickになります。");
             }
         }

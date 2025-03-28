@@ -84,4 +84,12 @@ public abstract class Embed {
                 .setColor(Color.GRAY)
                 .setTimestamp(new Date().toInstant());
     }
+
+    public static EmbedBuilder getAbortMatch(String id) {
+        return new EmbedBuilder()
+                .setTitle("TatakaiBot Match Result", "https://osu.ppy.sh/community/matches/" + id)
+                .setDescription("この試合はプレイヤーが退出したため、中止されました！")
+                .setColor(Color.RED)
+                .setTimestamp(new Date().toInstant());
+    }
 }

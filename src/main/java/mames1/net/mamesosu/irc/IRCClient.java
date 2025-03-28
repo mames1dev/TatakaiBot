@@ -49,6 +49,7 @@ public class IRCClient {
                 .addListener(new ReadyPlayer())
                 .addListener(new FinishMatch())
                 .addListener(new CloseRoom())
+                .addListener(new LeavePlayer())
                 .buildConfiguration();
 
         bot = new PircBotX(configuration);

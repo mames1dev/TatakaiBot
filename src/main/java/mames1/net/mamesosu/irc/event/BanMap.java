@@ -77,6 +77,7 @@ public class BanMap extends ListenerAdapter {
             Main.tourney.setAllBanned(allBanned);
             Main.tourney.setBanMaps(banMaps);
             Main.tourney.setCurrentBanTeam(teamName);
+            System.out.println("current: " + Main.tourney.getCurrentPickTeam());
 
             String teamNamePick = teamName.equals("blue") ? "red" : "blue";
 
@@ -90,7 +91,7 @@ public class BanMap extends ListenerAdapter {
 
                 e.getBot().send().message(Main.tourney.getChannel(), banMaps.get("blue") + "と" + banMaps.get("red") + "のマップがbanされました。");
                 e.getBot().send().message(Main.tourney.getChannel(), UserAccount.getUserName(teamMember.get("red")) + " " + teamScore.get("red") + " - " + teamScore.get("blue") + " " + UserAccount.getUserName(teamMember.get("blue")) +
-                        " | Pick: " + pName + " | Bo9");
+                        " | Pick: " + pName + " | Bo" + Main.tourney.getBo());
                 e.getBot().send().message(Main.tourney.getChannel(), pName + "はpickを行ってください。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!pick <slot> にてpickを行うことができます。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 60");

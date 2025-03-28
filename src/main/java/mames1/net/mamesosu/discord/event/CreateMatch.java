@@ -191,6 +191,16 @@ public class CreateMatch extends ListenerAdapter {
                 // トーナメント名が存在するか確認
 
                 try {
+                    if(!Main.tourney.getPlayers().isEmpty()) {
+                        e.getMessage().replyEmbeds(
+                                Embed.getErrorEmbed(
+                                        "現在進行中の試合があるため、部屋を作成できません。\n" +
+                                                "終了までお待ちください。"
+                                ).build()
+                        ).queue();
+                        return;
+                    }
+
                     Main.tourney = new Tourney();
                     List<String> t = Main.pool.getTourneyName();
 

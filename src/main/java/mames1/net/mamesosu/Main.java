@@ -13,16 +13,20 @@ public class Main {
     public static Tourney tourney;
     public static Pool pool;
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) {
 
-        bot = new Bot();
-        ircClient = new IRCClient();
-        tourney = new Tourney();
+        try {
+            bot = new Bot();
+            ircClient = new IRCClient();
+            tourney = new Tourney();
 
-        // Load all pool data
-        pool = new Pool();
+            // Load all pool data
+            pool = new Pool();
 
-        bot.start();
-        ircClient.start();
+            bot.start();
+            ircClient.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
