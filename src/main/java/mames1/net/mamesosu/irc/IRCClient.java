@@ -46,7 +46,9 @@ public class IRCClient {
                 .addListener(new BanMap())
                 .addListener(new DebugClose())
                 .addListener(new PickMap())
-                .addListener(new ReadyMatch())
+                .addListener(new ReadyPlayer())
+                .addListener(new FinishMatch())
+                .addListener(new CloseRoom())
                 .buildConfiguration();
 
         bot = new PircBotX(configuration);

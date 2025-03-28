@@ -28,6 +28,10 @@ public class BanMap extends ListenerAdapter {
                 return;
             }
 
+            if(Main.tourney.isGameEnd()) {
+                return;
+            }
+
             args[1] = args[1].toUpperCase();
 
             if(Main.tourney.getAllBanned().values().stream().allMatch(Boolean::booleanValue)) {
@@ -74,12 +78,14 @@ public class BanMap extends ListenerAdapter {
             Main.tourney.setBanMaps(banMaps);
             Main.tourney.setCurrentBanTeam(teamName);
 
+            String teamNamePick = teamName.equals("blue") ? "red" : "blue";
+
             Map<String, String> teamMember = Main.tourney.getTeamMember();
 
             if(Main.tourney.getAllBanned().values().stream().allMatch(Boolean::booleanValue)) {
 
                 Map<String, Integer> teamScore = Main.tourney.getTeamScore();
-                p = Main.tourney.getTeamMemberFromTeam(teamName);
+                p = Main.tourney.getTeamMemberFromTeam(teamNamePick);
                 pName = UserAccount.getUserName(p);
 
                 e.getBot().send().message(Main.tourney.getChannel(), banMaps.get("blue") + "と" + banMaps.get("red") + "のマップがbanされました。");

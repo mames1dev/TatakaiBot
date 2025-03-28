@@ -22,6 +22,10 @@ public class Roll extends ListenerAdapter {
             return;
         }
 
+        if(Main.tourney.isGameEnd()) {
+            return;
+        }
+
         if(matcher.find()) {
             String name = matcher.group(1);
             int point = Integer.parseInt(matcher.group(2));

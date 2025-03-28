@@ -1,5 +1,6 @@
 package mames1.net.mamesosu.tournament;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.entities.Message;
@@ -27,10 +28,15 @@ public class Tourney {
     Map<String, Integer> rollScore = new HashMap<>();
     Map<String, Integer> teamScore = new HashMap<>(); // TeamName, Score
 
+    List<Integer> winTeam = new ArrayList<>();
+
     boolean isAllPlayerJoined = false;
     boolean isCreated = false;
     boolean isPickEnd = false;
     boolean isMatch = false;
+    boolean isGameEnd = false;
+
+    Map<String, Integer> teamEachScore = new HashMap<>();
 
     Map<String, Boolean> allBanned = new HashMap<>();
 
@@ -44,9 +50,13 @@ public class Tourney {
     String roomName = null;
 
     int matchID = 0;
-    int bo = 9;
+    int bo;
 
     public Tourney() {
+
+        Dotenv dotenv = Dotenv.configure().load();
+        bo = Integer.parseInt(dotenv.get("BO"));
+
         players = new ArrayList<>();
 
         allBanned.put("red", false);
@@ -57,6 +67,9 @@ public class Tourney {
 
         pickedMaps.put("red", new ArrayList<>());
         pickedMaps.put("blue", new ArrayList<>());
+
+        teamEachScore.put("red", -1);
+        teamEachScore.put("blue", -1);
     }
 
     public String getTeamMemberFromTeam(String teamName) {

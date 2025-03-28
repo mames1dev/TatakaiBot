@@ -30,6 +30,10 @@ public class PickMap extends ListenerAdapter {
             return;
         }
 
+        if(Main.tourney.isGameEnd()) {
+            return;
+        }
+
         if(args.length != 2) {
             e.getBot().send().message(Main.tourney.getChannel(), "使い方: !pick <slot>");
             return;
@@ -66,9 +70,11 @@ public class PickMap extends ListenerAdapter {
 
         Map<String, List<String>> pickMaps = Main.tourney.getPickedMaps();
 
-        if(pickMaps.get(currentPickTeam).contains(args[1])) {
-            e.getBot().send().message(Main.tourney.getChannel(), "この譜面は既にpickされています。");
-            return;
+        for(String team : pickMaps.keySet()) {
+            if(pickMaps.get(team).contains(args[1])) {
+                e.getBot().send().message(Main.tourney.getChannel(), "この譜面は既にpickされています。");
+                return;
+            }
         }
 
         pickMaps.get(currentPickTeam).add(args[1]);
