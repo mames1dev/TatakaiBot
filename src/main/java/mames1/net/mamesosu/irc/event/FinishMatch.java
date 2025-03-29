@@ -123,8 +123,16 @@ public class FinishMatch extends ListenerAdapter {
                     eb.setColor(team1 > team2 ? Color.RED : Color.BLUE);
                     eb.setTimestamp(new Date().toInstant());
 
-                    Message message = Main.tourney.getInviteMessage();
-                    message.editMessageEmbeds(eb.build()).queue();
+                    if (Main.bot.isEditInsteadOfSend()) {
+                        Message message = Main.tourney.getInviteMessage();
+                        message.editMessageEmbeds(eb.build()).queue();
+                    } else {
+                        Main.bot.getJda().getGuildById(Main.bot.getGuildID())
+                                .getTextChannelById(Main.bot.getResultChannelID())
+                                .sendMessageEmbeds(
+                                        eb.build()
+                                ).queue();
+                    }
 
                     Main.ircClient.getBot().send().message(Main.tourney.getChannel(),
                             "お疲れさまでした。試合結果はDiscordからいつでも閲覧する事ができます。");

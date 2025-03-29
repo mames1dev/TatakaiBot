@@ -18,12 +18,21 @@ public class Bot {
 
     String token;
     String presence;
+    long guildID;
+    long resultChannelID = -1;
+    boolean editInsteadOfSend = false;
     JDA jda;
 
     public Bot() {
         Dotenv dotenv = Dotenv.configure().load();
         token = dotenv.get("BOT_TOKEN");
         presence = dotenv.get("BOT_PRESENCE");
+        guildID = Long.parseLong(dotenv.get("BOT_GUILD_ID"));
+        if(dotenv.get("BOT_RESULT_CHANNEL").isEmpty()) {
+            editInsteadOfSend = true;
+        } else {
+            resultChannelID = Long.parseLong(dotenv.get("BOT_RESULT_CHANNEL"));
+        }
     }
 
     public void start() {
