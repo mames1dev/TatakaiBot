@@ -120,10 +120,14 @@ public class PoolLoader {
         List<Map<String, Integer>> pool = new ArrayList<>();
 
         for(int i = 0; i < mod_values.size(); i++) {
-            pool.add(Map.of(
-                    mod_values.get(i).get(0).toString(),
-                    Integer.parseInt(id_values.get(i).get(0).toString().replaceAll("[^0-9]+", ""))
-            ));
+            try {
+                pool.add(Map.of(
+                        mod_values.get(i).get(0).toString(),
+                        Integer.parseInt(id_values.get(i).get(0).toString().replaceAll("[^0-9]+", ""))
+                ));
+            } catch (NumberFormatException e) {
+                return null;
+            }
         }
 
         return Map.of(name_values.get(0).get(0).toString().toLowerCase().replaceAll(" ", "_") +  "_" + stage_values.get(0).get(0).toString().toLowerCase() , pool);
