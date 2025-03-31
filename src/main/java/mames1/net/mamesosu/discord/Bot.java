@@ -6,6 +6,7 @@ import mames1.net.mamesosu.Main;
 import mames1.net.mamesosu.discord.event.CreateMatch;
 import mames1.net.mamesosu.discord.event.LinkAccount;
 import mames1.net.mamesosu.discord.event.Pool;
+import mames1.net.mamesosu.discord.event.SendPool;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -67,9 +68,9 @@ public class Bot {
                 .addEventListeners(
                         new LinkAccount(),
                         new CreateMatch(),
-                        new Pool()
+                        new Pool(),
+                        new SendPool()
                 )
                 .build();
-        jda.getGuildById(guildID).getTextChannelById(poolChannelID).getHistory();
     }
 }

@@ -149,6 +149,15 @@ public class CreateMatch extends ListenerAdapter {
                         ).queue();
                         return;
                     }
+
+                    if(bo < 3) {
+                        e.getMessage().replyEmbeds(
+                                Embed.getErrorEmbed(
+                                        "Best ofは3以上で指定してください！"
+                                ).build()
+                        ).queue();
+                        return;
+                    }
                 } catch (NumberFormatException ex) {
                     e.getMessage().replyEmbeds(
                             Embed.getErrorEmbed(

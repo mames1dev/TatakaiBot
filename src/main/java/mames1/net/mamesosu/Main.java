@@ -3,7 +3,6 @@ package mames1.net.mamesosu;
 import mames1.net.mamesosu.discord.Bot;
 import mames1.net.mamesosu.irc.IRCClient;
 import mames1.net.mamesosu.tournament.Pool;
-import mames1.net.mamesosu.tournament.PoolLoader;
 import mames1.net.mamesosu.tournament.Tourney;
 
 public class Main {

@@ -98,14 +98,14 @@ public class BanMap extends ListenerAdapter {
 
                 e.getBot().send().message(Main.tourney.getChannel(), pName + "はpickを行ってください。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!pick <slot> にてpickを行うことができます。");
-                e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 60");
+                e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 90");
 
                 return;
             }
 
             e.getBot().send().message(Main.tourney.getChannel(), "!mp timer cancel");
             e.getBot().send().message(Main.tourney.getChannel(),  "次に、" + UserAccount.getUserName(teamMember.get(teamName)) + "はbanを行ってください。");
-            e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 60");
+            e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 90");
         }
     }
 }

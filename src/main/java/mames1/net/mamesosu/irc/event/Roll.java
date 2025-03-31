@@ -48,7 +48,7 @@ public class Roll extends ListenerAdapter {
 
                 e.getBot().send().message(Main.tourney.getChannel(), banPlayer + "はbanを行ってください。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!ban <slot> にてbanを行うことができます。");
-                e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 60");
+                e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 90");
             }
         }
     }
