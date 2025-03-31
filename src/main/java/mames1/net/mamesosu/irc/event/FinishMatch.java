@@ -106,7 +106,7 @@ public class FinishMatch extends ListenerAdapter {
                 Main.tourney.setMatch(false);
 
                 Main.ircClient.getBot().send().message(Main.tourney.getChannel(),  UserAccount.getUserName(Main.tourney.getTeamMember().get("red")) + " " + Main.tourney.getTeamScore().get("red") + " - " + Main.tourney.getTeamScore().get("blue") + " " + UserAccount.getUserName(Main.tourney.getTeamMember().get("blue")) +
-                             " | Pick: " + UserAccount.getUserName(Main.tourney.getTeamMember().get(Main.tourney.getCurrentPickTeam()) + " | Bo" + Main.tourney.getBo()));
+                             " | Pick: " + UserAccount.getUserName(Main.tourney.getTeamMember().get(Main.tourney.getCurrentPickTeam())) + " | Bo" + Main.tourney.getBo());
 
                 // マッチ閉じる動作書く
                 if(Main.tourney.getTeamScore().get("red") == (Main.tourney.getBo() + 1) / 2 || Main.tourney.getTeamScore().get("blue") == (Main.tourney.getBo() + 1) / 2) {
