@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Member;
 
 import java.awt.*;
 import java.util.Date;
+import java.util.List;
 
 public abstract class Embed {
 
@@ -91,5 +92,23 @@ public abstract class Embed {
                 .setDescription("この試合はプレイヤーが退出したため、中止されました！")
                 .setColor(Color.RED)
                 .setTimestamp(new Date().toInstant());
+    }
+
+    public static EmbedBuilder getPool(List<String> pool) {
+        EmbedBuilder eb = new EmbedBuilder();
+
+        eb.setTitle("プール一覧");
+        eb.setDescription("現在の利用可能なプール一覧です。");
+
+        StringBuilder poolList = new StringBuilder();
+
+        for (String s : pool) {
+            poolList.append(s).append("\n");
+        }
+
+        eb.addField("プール", poolList.toString(), false);
+        eb.setColor(Color.GRAY);
+
+        return eb;
     }
 }

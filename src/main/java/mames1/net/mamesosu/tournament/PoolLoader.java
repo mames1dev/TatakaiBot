@@ -79,6 +79,7 @@ public class PoolLoader {
         String pool_name = sheet + "!A3";
         String mod_range = sheet + "!J6:" + "J" + (6 + calculateRow(row));
         String id_range = sheet + "!L6:" + "L" + (6 + calculateRow(row));
+        String stage_range = sheet + "!B3";
 
         ValueRange mod_response = sheetsService.spreadsheets().values()
                 .get(SPREADSHEET_ID, mod_range)
@@ -91,9 +92,14 @@ public class PoolLoader {
                 .get(SPREADSHEET_ID, pool_name)
                 .execute();
 
+        ValueRange stage = sheetsService.spreadsheets().values()
+                .get(SPREADSHEET_ID, stage_range)
+                .execute();
+
         List<List<Object>> mod_values = mod_response.getValues();
         List<List<Object>> id_values = id_response.getValues();
         List<List<Object>> name_values = name.getValues();
+        List<List<Object>> stage_values = stage.getValues();
 
         if (mod_values == null || mod_values.isEmpty() || id_values == null || id_values.isEmpty()) {
             return null;
@@ -107,15 +113,19 @@ public class PoolLoader {
             return null;
         }
 
+        if (stage_values == null || stage_values.isEmpty()) {
+            return null;
+        }
+
         List<Map<String, Integer>> pool = new ArrayList<>();
 
         for(int i = 0; i < mod_values.size(); i++) {
             pool.add(Map.of(
                     mod_values.get(i).get(0).toString(),
-                    Integer.parseInt(id_values.get(i).get(0).toString())
+                    Integer.parseInt(id_values.get(i).get(0).toString().replaceAll("[^0-9]+", ""))
             ));
         }
 
-        return Map.of(name_values.get(0).get(0).toString().toLowerCase().replaceAll(" ", "_") , pool);
+        return Map.of(name_values.get(0).get(0).toString().toLowerCase().replaceAll(" ", "_") +  "_" + stage_values.get(0).get(0).toString().toLowerCase() , pool);
     }
 }

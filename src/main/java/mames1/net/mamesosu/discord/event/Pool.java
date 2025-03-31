@@ -1,6 +1,7 @@
 package mames1.net.mamesosu.discord.event;
 
 import mames1.net.mamesosu.Main;
+import mames1.net.mamesosu.discord.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -27,19 +28,6 @@ public class Pool extends ListenerAdapter {
 
         List<String> pool = Main.pool.getTourneyName();
 
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("プール一覧");
-        eb.setDescription("現在の利用可能なプール一覧です。");
-
-        StringBuilder poolList = new StringBuilder();
-
-        for (String s : pool) {
-            poolList.append(s).append("\n");
-        }
-
-        eb.addField("プール", poolList.toString(), false);
-        eb.setColor(Color.GRAY);
-
-        e.getMessage().replyEmbeds(eb.build()).queue();
+        e.getMessage().replyEmbeds(Embed.getPool(pool).build()).queue();
     }
 }
