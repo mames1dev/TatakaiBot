@@ -35,6 +35,7 @@ public class Tourney {
     boolean isPickEnd = false;
     boolean isMatch = false;
     boolean isGameEnd = false;
+    boolean isBanEnd = false;
 
     Map<String, Integer> teamEachScore = new HashMap<>();
 

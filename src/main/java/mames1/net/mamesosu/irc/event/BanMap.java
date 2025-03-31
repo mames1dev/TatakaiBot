@@ -33,6 +33,10 @@ public class BanMap extends ListenerAdapter {
                 return;
             }
 
+            if(Main.tourney.isBanEnd()) {
+                return;
+            }
+
             args[1] = args[1].toUpperCase();
 
             if(Main.tourney.getAllBanned().values().stream().allMatch(Boolean::booleanValue)) {
@@ -99,6 +103,8 @@ public class BanMap extends ListenerAdapter {
                 e.getBot().send().message(Main.tourney.getChannel(), pName + "はpickを行ってください。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!pick <slot> にてpickを行うことができます。");
                 e.getBot().send().message(Main.tourney.getChannel(), "!mp timer 90");
+
+                Main.tourney.setBanEnd(true);
 
                 return;
             }

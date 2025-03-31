@@ -34,6 +34,10 @@ public class PickMap extends ListenerAdapter {
             return;
         }
 
+        if(!Main.tourney.isBanEnd()) {
+            return;
+        }
+
         if(args.length != 2) {
             e.getBot().send().message(Main.tourney.getChannel(), "使い方: !pick <slot>");
             return;
