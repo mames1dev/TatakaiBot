@@ -107,7 +107,7 @@ public class Tourney {
 
         if(matcher.find()) {
             return switch (matcher.group(1)) {
-                case "NM" -> "None";
+                case "NM" -> "";
                 case "FM" -> "FreeMod";
                 case "EZ" -> "2";
                 case "RX" -> "128";
