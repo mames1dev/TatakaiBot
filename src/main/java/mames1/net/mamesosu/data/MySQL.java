@@ -26,7 +26,7 @@ public class MySQL {
 
         try {
             return DriverManager.getConnection(
-                    "jdbc:mysql://" + host + "/" + database + "?useSSL=false",
+                    "jdbc:mysql://" + host + "/" + database + "?allowPublicKeyRetrieval=true&useSSL=false",
                     user,
                     password
             );
